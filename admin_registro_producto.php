@@ -1,11 +1,20 @@
 <?php
-require_once "config.php";
-require_once "db/connDb.php";
-session_start(); //inicializar la sesion
-if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-    header("Location:login.php");
-}
-$section = "admin_registro_producto";
+    require_once "config.php";
+    require_once "db/connDb.php";
+    require_once "funcion_back_admin.php";
+
+    session_start(); //inicializar la sesion
+    if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
+        header("Location:login.php");
+    }
+
+    $section = "admin_registro_producto";
+    $msg = "null";
+
+    if (isset($_POST["registroProducto"]))
+        $msg = registroProducto();
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,7 +28,8 @@ $section = "admin_registro_producto";
             <h2>Registro de Producto</h2>
         </center>
         <!-- inicio de registro -->
-        <form class="cont-form" action="admin_back_registro_producto.php" method="POST">
+        <form class="cont-form" action="?" method="POST">
+            <input type="hidden" name="registroProducto">
             <div class="mb-3 row form-goup">
                 <label class="col-sm-2 col-form-label">Codigo</label>
                 <div class="col-sm-10">
@@ -58,9 +68,8 @@ $section = "admin_registro_producto";
     <footer>
         <?php
         include_once("pie_de_pagina.php");
+        
         ?>
-        <script src="js/bootstrap_js/bootstrap.min.js"></script>
-        <script src="js/sweetalert.min.js"></script>
 
     </footer>
 

@@ -1,12 +1,30 @@
 <?php
-require_once "config.php";
-require_once "db/connDb.php";
-session_start(); //inicializar la sesion
-if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-  header("Location:login.php");
-}
-$section = "admin_registro_empleado";
+  require_once "config.php";
+  require_once "db/connDb.php";
+  require_once "funcion_back_admin.php";
+
+  session_start(); //inicializar la sesion
+  if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
+    header("Location:login.php");
+  }
+  $section = "admin_registro_empleado";
+  $msg = "null";
+
+  if (isset($_POST["registrarEmpleado"])){
+       $msg = registrarEmpleado();
+  }
+
+  if (isset($_GET["eliminarEmpleado"])){
+    $msg = eliminarEmpleado();
+  }
+
+    
+  $datosEmpleados = listarEmpleados();
+  
+
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -15,47 +33,67 @@ $section = "admin_registro_empleado";
 
 <body>
   <center>
-    <h2>Registro de Empleado</h2>
+    <a class="btn  mt-3 bg-navbar" data-bs-toggle="collapse" href="#collapseRegistro" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Registrar Empleado
+    </a>
   </center>
-  <!-- inicio de registro -->
-  <form class="cont-form">
-    <div class="mb-3 row form-goup">
-      <label class="col-sm-2 col-form-label">Nombre</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="nombre_emp" required>
+  <div class="collapse" id="collapseRegistro">
+    <center>
+      <h2>Registro de Empleado</h2>
+    </center>
+    <!-- inicio de registro -->
+    <form action="?" class="cont-form" method="POST">
+      <input type="hidden" name="registrarEmpleado">
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Nombre</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="nombre_emp" required>
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3 row form-goup">
-      <label class="col-sm-2 col-form-label">Apellido</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="apellido_emp" required>
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Apellido</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="apellido_emp" required>
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3 row form-goup">
-      <label class="col-sm-2 col-form-label">Telefono</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="telefono_emp" required>
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Telefono</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="telefono_emp" required>
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3 row form-goup">
-      <label class="col-sm-2 col-form-label">Direccion</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="direccion_emp" required>
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Direccion</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="direccion_emp" required>
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3 row form-goup">
-      <label class="col-sm-2 col-form-label">RFC</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="rfc_emp" required>
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">RFC</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="rfc_emp" required>
+        </div>
       </div>
-    </div>
-    <center><button type="submit" class="btn btn-primary">Registrar</button></center>
-  </form>
-  <!-- fin de registro -->
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Usuario</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="usuario_emp" required>
+        </div>
+      </div>
+      <div class="mb-3 row form-goup">
+        <label class="col-sm-2 col-form-label">Contraseña</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control" name="contrasena_emp" required>
+        </div>
+      </div>
+      <center><button type="submit" class="btn btn-primary">Registrar</button></center>
+    </form>
+    <!-- fin de registro -->
+  </div>
 
   <!-- inicio de tabla -->
   <div class="top-table table-responsive">
@@ -73,46 +111,24 @@ $section = "admin_registro_empleado";
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>Otto</td>
-          <td>
-            <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-danger js-delete"><i class="fas fa-trash-alt"></i></a>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-          <td>@mdo</td>
-          <td>Otto</td>
-          <td>Otto</td>
-          <td>
-            <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-danger js-delete"><i class="fas fa-trash-alt"></i></a>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-
-          <td>uhhkj </td>
-          <td>Thornton</td>
-          <td>@fat</td>
-          <td>@mdo</td>
-          <td>Otto</td>
-          <td>Otto</td>
-          <td>
-            <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-danger js-delete"><i class="fas fa-trash-alt"></i></a>
-          </td>
-        </tr>
+        <?php 
+        $i = 0;
+        foreach ($datosEmpleados as $key => $value) {
+                    $i ++;
+                    echo '<tr>
+                            <td>'. $i. '</td>
+                            <td>'. $value["nombre"] . '</td>
+                            <td>' .$value["apellido"] . '</td>
+                            <td>' .$value["telefono"] . '</td>
+                            <td>'. $value["direccion"]. '</td>
+                            <td>'. $value["rfc"]. '</td>
+                            <td>'. $value["fecha_ingreso"]. '</td>
+                            <td>
+                                <a href="admin_editar_empleado.php?editarEmpleado&id='.$value["id"].'" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                <a href="#?eliminarEmpleado&&id='.$value["id"].'" class="btn btn-danger js-delete"><i class="fas fa-trash-alt"></i></a>
+                        </tr>
+                        ';
+                } ?>
       </tbody>
     </table>
   </div>
@@ -121,10 +137,9 @@ $section = "admin_registro_empleado";
 
   <footer>
     <?php
-    include_once("pie_de_pagina.php");
+      include_once("pie_de_pagina.php");
+
     ?>
-    <script src="js/bootstrap_js/bootstrap.min.js"></script>
-    <script src="js/sweetalert.min.js"></script>
     <script>
       var deletes = document.querySelectorAll(".js-delete");
       deletes.forEach(function(value, key) {

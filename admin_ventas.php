@@ -1,6 +1,9 @@
 <?php
 require_once "config.php";
 require_once "db/connDb.php";
+require_once "funcion_back_admin.php";
+
+
 session_start(); //inicializar la sesion
 if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
   header("Location:login.php");
@@ -84,7 +87,6 @@ $section = "admin_ventas";
     <?php
     include_once("pie_de_pagina.php");
     ?>
-    <script src="js/bootstrap_js/bootstrap.min.js"></script>
   </footer>
 
 </body>

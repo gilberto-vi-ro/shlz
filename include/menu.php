@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/icon/font-awesome.min.css">
   <link rel="stylesheet" href="css/icon/ka-f.fontawesome.v5.15.4.free.min.css">
+  <script src="js/bootstrap_js/bootstrap.min.js"></script>
+  <script src="js/sweetalert.min.js"></script>
   <!-- /*=============================================
     ICONS FONTAWESOME FREE
     https://fontawesome.com/v5/search 
@@ -53,6 +55,8 @@
   </header>
   <script>
     var section = "<?= $section; ?>";
+    var msg = "<?= $msg; ?>";
+    
 
     if (section == "admin_inventario")
       document.getElementById("inventario").classList.add("active");
@@ -62,6 +66,11 @@
       document.getElementById("navbarDropdown").classList.add("active");
     else if (section == "admin_ventas")
       document.getElementById("ventas").classList.add("active");
+
+      if(msg!="null")
+            swal("INFO", msg, "info").then(function(val){
+                history.pushState(null,"","?");
+            });
   </script>
 
 </head>
