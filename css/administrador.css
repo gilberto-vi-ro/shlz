@@ -1,0 +1,62 @@
+/*=========================navbar============================== */
+ .bg-navbar{
+     background:#FFDDC2
+ }
+.nav-link{
+    font-weight: bolder;
+}
+ .nav-link.active{
+    border-bottom: solid 3px #FF290A;
+ }
+ /* =========================search============================== */
+.size-input-search{
+    padding: 20px;
+    margin-top: 50px;
+    max-width: 500px;
+}
+
+ /* =========================table============================== */
+ .top-table{
+
+    margin-top: 30px;
+    padding: 20px;
+ }
+ /* =========================form registro============================== */
+.cont-form{
+    margin: auto;
+    max-width: 500px;
+}
+.cont-form .row{
+    max-width: 100%;
+}
+.cont-form .form-control{
+    margin-left: 0px;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+}
+
+/*estilo de el range calendar box select*/
+
+.date-range{
+	display: block;
+	position: absolute;
+	float: right;
+	right: 0px;
+	margin-top: 20px;
+}
+.date-range ul li{
+	margin-right: 10px;
+	list-style: none;
+	float: left;
+}
+.date-range .fas{
+	color : #298D7A ;
+	font-size: 18px;
+}
+
+.date-range .date-box{
+	width: 120px;
+}

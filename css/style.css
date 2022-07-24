@@ -1,0 +1,21 @@
+
+label{
+    color:black;
+    font-size: 25px;
+}
+button{
+    background-color: rgb(42, 187, 42);
+    color: aliceblue;
+}
+input{
+    background:#ffffff;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+.img-producto{
+    margin-left: 400px;
+}
+li{
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
