@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="css/administrador.css">
+  <link rel="stylesheet" href="css/empleado.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/icon/font-awesome.min.css">
   <link rel="stylesheet" href="css/icon/ka-f.fontawesome.v5.15.4.free.min.css">
@@ -23,7 +24,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-           
+
             <li class="nav-item">
               <a id="ventas" class="nav-link" aria-current="page" href="admin_ventas.php">Ventas</a>
             </li>

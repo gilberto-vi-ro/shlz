@@ -59,6 +59,7 @@ VALUES
 CREATE TABLE IF NOT EXISTS `venta` (
     `idventa` int(11) NOT NULL AUTO_INCREMENT,
     `cantidad` varchar(45) DEFAULT NULL,
+    `total` DOUBLE DEFAULT NULL,
     `fecha_venta` date DEFAULT NULL,
     `cod_producto` int(11) DEFAULT NULL,
     `dni` int(11) DEFAULT NULL,
