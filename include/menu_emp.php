@@ -26,7 +26,10 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
             <li class="nav-item">
-              <a id="ventas" class="nav-link" aria-current="page" href="admin_ventas.php">Ventas</a>
+              <a id="emp_vender" class="nav-link" aria-current="page" href="emp_vender.php">Vender</a>
+            </li>
+            <li class="nav-item">
+              <a id="emp_ventas" class="nav-link" aria-current="page" href="emp_ventas.php">Ventas</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="cerrar_sesion.php">Cerrar sesion</a>
@@ -43,14 +46,10 @@
   <script>
     var section = "<?= $section; ?>";
 
-    if (section == "admin_inventario")
-      document.getElementById("inventario").classList.add("active");
-    // else if (section == "admin_registro_empleado")
-    //   document.getElementById("navbarDropdown").classList.add("active");
-    // else if (section == "admin_registro_producto")
-    //   document.getElementById("navbarDropdown").classList.add("active");
-    else if (section == "admin_ventas")
-      document.getElementById("ventas").classList.add("active");
+    if (section == "emp_vender")
+      document.getElementById("emp_vender").classList.add("active");
+    else if (section == "emp_ventas")
+      document.getElementById("emp_ventas").classList.add("active");
   </script>
 
 </head>

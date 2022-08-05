@@ -88,36 +88,62 @@ function cancelarVenta()
 }
 function terminarVenta()
 {
-    if (!isset($_POST["total"])) exit;
+    if (!isset($_POST["total"]) || $_POST["total"] == 0) return;
 
-    $cantidad = "";
-    $total = $_POST["total"];
-    $ahora = date("Y-m-d H:i:s");
-    $cod_producto = "";
-    $dni = $_SESSION["id_empleado"];
+    try{
+        $total = $_POST["total"];
+        $ahora = date("Y-m-d H:i:s");
+        $dni = $_SESSION["id_empleado"];
 
 
-    $sentencia = connDB()->prepare("INSERT INTO `venta` (`cantidad`, `total`, `fecha_venta`, `cod_producto`, `dni`) VALUES (?, ?, ?, ?, ?);");
-    $sentencia->execute([$cantidad, $total, $ahora, $cod_producto, $dni]);
+        $sentencia = connDB()->prepare("INSERT INTO `ventas` (`total`, `fecha_venta`, `dni`) VALUES (?, ?, ?);");
+        $sentencia->execute([$total, $ahora, $dni]);
 
-    $sentencia = connDB()->prepare("SELECT id FROM venta ORDER BY id DESC LIMIT 1;");
-    $sentencia->execute();
-    $resultado = $sentencia->fetch(PDO::FETCH_OBJ);
+        $sentencia = connDB()->prepare("SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1;");
+        $sentencia->execute();
+        $resultado = $sentencia->fetch(PDO::FETCH_OBJ);
+        
+        $idVenta = $resultado === false ? 1 : $resultado->id_venta;
 
-    $idVenta = $resultado === false ? 1 : $resultado->id;
+        //connDB()->beginTransaction();
+        $query = connDB()->prepare("INSERT INTO productos_vendidos (cod_producto, id_venta, cantidad, total) VALUES (?, ?, ?, ?);");
+        $queryStock = connDB()->prepare("UPDATE producto SET stock = stock - ? WHERE cod_producto= ?;");
+        
+        foreach ($_SESSION["carrito"] as $producto) {
+        
+                $total += $producto->total;
+                $query->execute([$producto->cod_producto, $idVenta, $producto->cantidad, $producto->total ]);
+                $queryStock->execute([$producto->cantidad, $producto->cod_producto]);
+        }
+    
+        //connDB()->commit();
 
-    connDB()->beginTransaction();
-    $sentencia = connDB()->prepare("INSERT INTO productos_vendidos(id_producto, id_venta, cantidad) VALUES (?, ?, ?);");
-    $sentenciaExistencia = connDB()->prepare("UPDATE productos SET existencia = existencia - ? WHERE id = ?;");
-    foreach ($_SESSION["carrito"] as $producto) {
-        $total += $producto->total;
-        $sentencia->execute([$producto->id, $idVenta, $producto->cantidad]);
-        $sentenciaExistencia->execute([$producto->cantidad, $producto->id]);
+        unset($_SESSION["carrito"]);
+        $_SESSION["carrito"] = [];
+        header("Location: ?status=1");
+    }catch(PDOException $e)  {
+        echo $e->getMessage();
+        exit();
     }
-    connDB()->commit();
-    unset($_SESSION["carrito"]);
-    $_SESSION["carrito"] = [];
-    header("Location: ./vender.php?status=1");
+    
+}
+
+function listarVentas(){
+
+    //listar inventario
+    $miConsulta = connDB()->prepare("SELECT * FROM ventas");
+    $miConsulta->execute();// Ejecutar consulta
+    return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ);// Obtener en obejto los datos de la BD
+}
+
+function verVenta(){
+
+    //listar inventario
+    $miConsulta = connDB()->prepare("SELECT * FROM productos_vendidos
+	        INNER JOIN producto ON productos_vendidos.cod_producto = producto.cod_producto
+            where id_venta = ?");
+    $miConsulta->execute([$_GET["id"]]);// Ejecutar consulta
+    return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ);// Obtener en obejto los datos de la BD
 }
 
 

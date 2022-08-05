@@ -5,3 +5,21 @@
      margin-bottom: 40px;
  }
 
+ footer a{
+    text-decoration: none;
+  }
+
+.btn-top{
+  margin-top: 76px;
+}
+
+@media (max-width: 750px){ 
+
+  .btn-top{
+    margin-top: -10px;
+  }
+}
+
+
+
+

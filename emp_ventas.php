@@ -6,26 +6,17 @@ session_start(); //inicializar la sesion
 if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_admin regresar al login.php
   header("Location:login.php");
 }
+$msg=null;
 
-if (!isset($_SESSION["carrito"])) $_SESSION["carrito"] = [];
-$granTotal = 0;
-$section = "admin_ventas";
+$section = "emp_ventas";
+$verVenta  = array();
+$ventaTotal = 0;
 
-
-if (isset($_GET["agregarAlCarrito"])) {
-   agregarAlCarrito();
-  }
-else if (isset($_GET["cancelarVenta"])) {
-    cancelarVenta();
-} else if (isset($_GET["cambiarCantidad"])) {
-  cambiarCantidad();
-} else if (isset($_GET["quitarDelCarrito"])) {
-  quitarDelCarrito();
-} else if (isset($_GET["terminarVenta"])) {
-  terminarVenta();
-} else if (isset($_GET["cancelarVenta"])) {
-  cancelarVenta();
+$listarVentas = listarVentas();
+if (isset($_GET["verVenta"])) {
+  $verVenta = verVenta();
 }
+
 
 
 
@@ -47,59 +38,103 @@ else if (isset($_GET["cancelarVenta"])) {
 
 <body>
 
-
+<?php if (isset($_GET["verVenta"])) {  ?>
   <section style="padding: 22px;">
-
-
     <div class="container p-5 s">
-      <form method="POST" action="?agregarAlCarrito" class="buscaddor-codigo">
-        <label for="codigo">Código de barras:</label>
-        <input autocomplete="off" autofocus class="form-control" name="codigo" required type="text" id="codigo" placeholder="Escribe el código">
-      </form>
-
-
+      <div class="row">
+        <div class="col-md-6 "> 
+          <form method="POST" action="?buscar" class="buscaddor-codigo">
+            <label for="codigo">Buscar:</label>
+            <input autocomplete="off" autofocus class="form-control" name="buscar" required type="text" placeholder="Escribe el código">
+          </form>
+        </div>
+        <div class="col-md-6 ">
+          <a href="?" class="btn btn-primary mb-4 btn-top">Regresar</a>
+        </div>
+      </div>
+      
+      
+    <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
           
-            <th>Código</th>
-            <th>Descripción</th>
-            <th>Precio de venta</th>
+            <th>#</th>
+            <th>Codigo producto</th>
+            <th>Nombre</th>
+            <th>Precio</th>
             <th>Cantidad</th>
             <th>Total</th>
-            <th>Quitar</th>
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($_SESSION["carrito"] as $indice => $producto) {
-            $granTotal += $producto->total;
+          <?php foreach ($verVenta as $indice => $producto) {
+              $ventaTotal += $producto->total;
           ?>
             <tr>
-              <td><?= $producto->cod_producto ?></td>
+              <td><?= $indice+1 ?></td>
+              <td><?= $producto->cod_producto?></td>
               <td><?= $producto->nombre ?></td>
               <td><?= $producto->precio ?></td>
-              <td>
-                <form action="?cambiarCantidad" method="post">
-                  <input name="indice" type="hidden" value="<?= $indice; ?>">
-                  <input min="1" name="cantidad" class="form-control" required type="number" step="0.1" value="<?= $producto->cantidad; ?>">
-                </form>
-              </td>
-              <td><?= $producto->total ?></td>
-              <td><a class="btn btn-danger" href="<?= "?quitarDelCarrito&indice=" . $indice ?>"><i class="fa fa-trash"></i></a></td>
+              <td><?= $producto->cantidad?></td>
+              <td><?= $producto->total?></td>
+              <!-- <td><a class="btn btn-danger" href="?= "?eliminarVenta&id=" . $producto->id_venta ?>"><i class="fa fa-trash"></i></a></td> -->
+              <!-- <td><a class="btn btn-primary" href="<?= "?verVenta&id=" . $producto->id_venta ?>"><i class="fas fa-eye"></i></a></td> -->
             </tr>
           <?php } ?>
         </tbody>
+        <tr class="tr-colspan">
+            <td scope="row" colspan="5">Total price</td>
+            <td translate="no">$ <?=$ventaTotal ?></td>
+        </tr>
       </table>
+    </div>
+      <br>
+      <br>
+  </section>
 
-      <h3>Total: <?php echo $granTotal; ?></h3>
-      <form action="?terminarVenta" method="POST">
-        <input name="total" type="hidden" value="<?php echo $granTotal; ?>">
-        <button type="submit" class="btn btn-success">Terminar venta</button>
-        <a href="?cancelarVenta" class="btn btn-danger">Cancelar venta</a>
+<?php }else  {  ?>
+  <section style="padding: 22px;">
+    <div class="container p-5 s">
+      <form method="POST" action="?agregarAlCarrito" class="buscaddor-codigo">
+        <label for="codigo">Buscar:</label>
+        <input autocomplete="off" autofocus class="form-control" name="buscar" required type="text" placeholder="Escribe el código">
       </form>
-
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+            
+              <th>#</th>
+              <th>Id venta</th>
+              <th>Total</th>
+              <th>Fecha de venta</th>
+              <th>ID Empleado</th>
+              <th>Ver</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($listarVentas as $indice => $venta) {
+              
+            ?>
+              <tr>
+                <td><?= $indice+1 ?></td>
+                <td><?= $venta->id_venta?></td>
+                <td><?= $venta->total?></td>
+                <td><?= $venta->fecha_venta ?></td>
+                <td><?= $venta->dni?></td>
+                <!-- <td><a class="btn btn-danger" href="?= "?eliminarVenta&id=" . $venta->id_venta ?>"><i class="fa fa-trash"></i></a></td> -->
+                <td><a class="btn btn-primary" href="<?= "?verVenta&id=" . $venta->id_venta ?>"><i class="fas fa-eye"></i></a></td>
+              </tr>
+            <?php } ?>
+          </tbody>
+              
+        </table>
+      </div>
       <br>
       <br>
+  </section>
+<?php  } ?>
       <footer>
         <?php
         include_once("pie_de_pagina.php");
