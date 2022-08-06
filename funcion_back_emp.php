@@ -4,7 +4,7 @@
 
     function agregarAlCarrito(){
         if (!isset($_POST["codigo"])) {
-            return;
+            return "No se recibio el codigo.";
         }
 
         $codigo = $_POST["codigo"];
@@ -13,13 +13,13 @@
         $producto = $sentencia->fetch(PDO::FETCH_OBJ);
         # Si no existe, salimos y lo indicamos
         if (!$producto) {
-            header("Location:?status=4");
-            exit;
+            //header("Location:?status=4");
+            return "El codigo no existe en la BD.";
         }
         # Si no hay existencia...
         if ($producto->stock < 1) {
-            header("Location:?status=5");
-            exit;
+            //header("Location:?status=5");
+            return "El producto se ha agotado.";
         }
         
         # Buscar producto dentro del cartito
@@ -44,8 +44,8 @@
             $cantidadExistente = $_SESSION["carrito"][$indice]->cantidad;
             # si al sumarle uno supera lo que existe, no se agrega
             if ($cantidadExistente + 1 > $producto->stock) {
-                header("Location: ?status=5");
-                exit;
+                //header("Location: ?status=5");
+                return "El producto se ha agotado.";
             }
 
             $_SESSION["carrito"][$indice]->cantidad = $_SESSION["carrito"][$indice]->cantidad + 1 ;
@@ -56,17 +56,17 @@
 
     function cambiarCantidad(){
         if (!isset($_POST["cantidad"])) {
-            exit("No hay cantidad");
+            return "No hay cantidad.";
         }
         if (!isset($_POST["indice"])) {
-            exit("No hay índice");
+            return "No hay índice.";
         }
         $cantidad = floatval($_POST["cantidad"]);
         $indice = intval($_POST["indice"]);
         
         if ($cantidad > $_SESSION["carrito"][$indice]->stock) {
-            header("Location: ?status=5");
-            exit;
+            //header("Location: ?status=5");
+            return "El producto se ha agotado.";
         }
         $_SESSION["carrito"][$indice]->cantidad = $cantidad;
         $_SESSION["carrito"][$indice]->total = $_SESSION["carrito"][$indice]->cantidad * $_SESSION["carrito"][$indice]->precio;
@@ -77,18 +77,20 @@
         if (!isset($_GET["indice"])) return;
         $indice = $_GET["indice"];
         array_splice($_SESSION["carrito"], $indice, 1);
-        header("Location: ?status=3");
+        //header("Location: ?status=3");
+        return "Se elimino de la venta.";
     }
 
 function cancelarVenta()
 {
     unset($_SESSION["carrito"]);
     $_SESSION["carrito"] = [];
-    header("?status=2");
+    //header("?status=2");
+    return "Se cancelo la venta.";
 }
 function terminarVenta()
 {
-    if (!isset($_POST["total"]) || $_POST["total"] == 0) return;
+    if (!isset($_POST["total"]) || $_POST["total"] == 0) return "Ha ocurrido un error al terninar la venta";
 
     try{
         $total = $_POST["total"];
@@ -120,7 +122,9 @@ function terminarVenta()
 
         unset($_SESSION["carrito"]);
         $_SESSION["carrito"] = [];
-        header("Location: ?status=1");
+        //header("Location: ?status=1");
+        return "Se termino la venta Correctamente.";
+
     }catch(PDOException $e)  {
         echo $e->getMessage();
         exit();
@@ -131,8 +135,19 @@ function terminarVenta()
 function listarVentas(){
 
     //listar inventario
-    $miConsulta = connDB()->prepare("SELECT * FROM ventas");
-    $miConsulta->execute();// Ejecutar consulta
+    if (isset($_POST['buscar'])){
+        $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+	    INNER JOIN empleado
+	    ON ventas.dni = empleado.id
+        WHERE ventas.id_venta = ? OR ventas.fecha_venta like ? OR ventas.dni = ? OR empleado.nombre = ? OR empleado.apellido = ? ");
+        $miConsulta->execute([$_POST['buscar'],"%".$_POST['buscar']."%",$_POST['buscar'],$_POST['buscar'],$_POST['buscar']]);
+    }else {
+        $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+	    INNER JOIN empleado
+	    ON ventas.dni = empleado.id");
+        $miConsulta->execute();
+    }
+    // Ejecutar consulta
     return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ);// Obtener en obejto los datos de la BD
 }
 

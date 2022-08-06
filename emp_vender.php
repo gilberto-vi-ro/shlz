@@ -6,35 +6,31 @@ session_start(); //inicializar la sesion
 if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_admin regresar al login.php
   header("Location:login.php");
 }
-$msg=null;
+
+$section = "emp_vender";
+$msg = "null";
 if (!isset($_SESSION["carrito"])) $_SESSION["carrito"] = [];
 $granTotal = 0;
-$section = "emp_vender";
+
 
 
 if (isset($_GET["agregarAlCarrito"])) {
-   agregarAlCarrito();
-  }
+  $msg = agregarAlCarrito();
+}
 else if (isset($_GET["cancelarVenta"])) {
-    cancelarVenta();
+  $msg = cancelarVenta();
 } else if (isset($_GET["cambiarCantidad"])) {
-  cambiarCantidad();
+  $msg = cambiarCantidad();
 } else if (isset($_GET["quitarDelCarrito"])) {
-  quitarDelCarrito();
+  $msg = quitarDelCarrito();
 } else if (isset($_GET["terminarVenta"])) {
-  terminarVenta();
+  $msg = terminarVenta();
 } else if (isset($_GET["cancelarVenta"])) {
-  cancelarVenta();
+  $msg = cancelarVenta();
 }
 
 
 
-
-
-//  //listar inventario
-//  $miConsulta = connDB()->prepare("SELECT * FROM producto");
-//  $miConsulta->execute();// Ejecutar consulta
-//  $data = $miConsulta->fetchAll(PDO::FETCH_ASSOC);// Obtener en array los datos de la BD
 
 ?>
 

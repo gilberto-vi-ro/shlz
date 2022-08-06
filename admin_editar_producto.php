@@ -3,7 +3,7 @@
     require_once "db/connDb.php";
     require_once "funcion_back_admin.php";
 
-    $section = "admin_registro_producto";
+    $section = "";
     $msg = "null";
 
     if (isset($_POST["editarProductoDelForm"]))

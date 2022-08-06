@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/icon/font-awesome.min.css">
   <link rel="stylesheet" href="css/icon/ka-f.fontawesome.v5.15.4.free.min.css">
+  <script src="js/bootstrap_js/bootstrap.min.js"></script>
+  <script src="js/sweetalert.min.js"></script>
   <!-- /*=============================================
     ICONS FONTAWESOME FREE
     https://fontawesome.com/v5/search 
@@ -45,11 +47,19 @@
   </header>
   <script>
     var section = "<?= $section; ?>";
+    var msg = "<?= $msg; ?>";
 
     if (section == "emp_vender")
       document.getElementById("emp_vender").classList.add("active");
     else if (section == "emp_ventas")
       document.getElementById("emp_ventas").classList.add("active");
+
+    if(msg!="null"){
+      swal("INFO", msg, "info").then(function(val){
+          history.pushState(null,"","?");
+      });
+    }
+      
   </script>
 
 </head>

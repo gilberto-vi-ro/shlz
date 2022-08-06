@@ -67,10 +67,10 @@
     else if (section == "admin_ventas")
       document.getElementById("ventas").classList.add("active");
 
-      if(msg!="null")
-            swal("INFO", msg, "info").then(function(val){
-                history.pushState(null,"","?");
-            });
+    if(msg!="null")
+      swal("INFO", msg, "info").then(function(val){
+          history.pushState(null,"","?");
+      });
   </script>
 
 </head>
