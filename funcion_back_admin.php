@@ -128,4 +128,59 @@ function eliminarEmpleado(){
         return $msg = "Ocurrio un Error al actualizar";
   }
 
+function listarVentas()
+{
+
+    try {
+        $ahora = date("Y-m-d");
+
+        $fechaInicio = $ahora;
+        $fechaFin = $ahora;
+
+        if (isset($_GET["date_range1"]) && isset($_GET["date_range2"])){
+            $fechaInicio = $_GET["date_range1"];
+            $fechaFin = $_GET["date_range2"];
+        }
+    
+        
+        //listar inventario
+        if (isset($_POST['buscar']) && $_POST['buscar'] != "") {
+            $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+	    INNER JOIN empleado
+	    ON ventas.dni = empleado.id
+        WHERE ventas.id_venta = ? OR ventas.dni = ? OR empleado.nombre like ? OR empleado.apellido like ?
+        AND ventas.fecha_venta >= ? AND ventas.fecha_venta <= ?
+         order by id_venta desc");
+            $miConsulta->execute([$_POST['buscar'], $_POST['buscar'], "%".$_POST['buscar']."%", "%".$_POST['buscar']."%", $fechaInicio,$fechaFin]);
+        } else {
+            $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+	    INNER JOIN empleado
+	    ON ventas.dni = empleado.id  
+        WHERE ventas.fecha_venta >= ? AND ventas.fecha_venta <= ?
+        order by id_venta desc");
+            $miConsulta->execute([$fechaInicio, $fechaFin]);
+        }
+        // Ejecutar consulta
+        return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ); // Obtener en obejto los datos de la BD
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+        exit();
+    }
+}
+
+
+function verVenta()
+{
+
+    //listar inventario
+    $miConsulta = connDB()->prepare("SELECT * FROM productos_vendidos
+	        INNER JOIN producto ON productos_vendidos.cod_producto = producto.cod_producto
+            where id_venta = ?");
+    $miConsulta->execute([$_GET["id"]]); // Ejecutar consulta
+    return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ); // Obtener en obejto los datos de la BD
+}
+
+
+
 ?>

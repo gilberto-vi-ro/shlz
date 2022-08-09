@@ -72,7 +72,7 @@
 
     <footer>
         <?php
-            include_once("pie_de_pagina.php");
+        include_once("include/pie_de_pagina.php");
         ?>
 
     </footer>

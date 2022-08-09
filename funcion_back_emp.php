@@ -134,21 +134,29 @@ function terminarVenta()
 
 function listarVentas(){
 
-    //listar inventario
-    if (isset($_POST['buscar'])){
-        $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+   try{
+        $ahora = date("Y-m-d");
+        //listar inventario
+        if (isset($_POST['buscar']) && $_POST['buscar'] != "") {
+            $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
 	    INNER JOIN empleado
 	    ON ventas.dni = empleado.id
-        WHERE ventas.id_venta = ? OR ventas.fecha_venta like ? OR ventas.dni = ? OR empleado.nombre = ? OR empleado.apellido = ? ");
-        $miConsulta->execute([$_POST['buscar'],"%".$_POST['buscar']."%",$_POST['buscar'],$_POST['buscar'],$_POST['buscar']]);
-    }else {
-        $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
+        WHERE ventas.id_venta = ? OR ventas.dni = ? OR empleado.nombre like ? OR empleado.apellido like ? AND ventas.fecha_venta = ? order by id_venta desc");
+            $miConsulta->execute([$_POST['buscar'], $_POST['buscar'], "%".$_POST['buscar']."%", "%".$_POST['buscar']."%", $ahora]);
+        } else {
+            $miConsulta = connDB()->prepare("SELECT id_venta, total, fecha_venta, dni, CONCAT(empleado.nombre,' ', empleado.apellido) AS nombre_completo FROM ventas
 	    INNER JOIN empleado
-	    ON ventas.dni = empleado.id");
-        $miConsulta->execute();
+	    ON ventas.dni = empleado.id AND ventas.fecha_venta = ?  order by id_venta desc");
+            $miConsulta->execute([$ahora]);
+        }
+        // Ejecutar consulta
+        return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ);// Obtener en obejto los datos de la BD
+
+   } catch(PDOException $e)  {
+        echo $e->getMessage();
+        exit();
     }
-    // Ejecutar consulta
-    return $data = $miConsulta->fetchAll(PDO::FETCH_OBJ);// Obtener en obejto los datos de la BD
+    
 }
 
 function verVenta(){

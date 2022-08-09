@@ -29,7 +29,7 @@ if (isset($_POST["usuario"])) {
         // "bienvenido como empleado";
         session_start();
         $_SESSION["id_empleado"] = $datosEmpleado["id"]; //guardamos el empleado.id en una sesion id_empleado
-        header("Location:emp_ventas.php");
+        header("Location:emp_vender.php");
     }
 }
 ?>
