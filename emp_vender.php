@@ -7,8 +7,7 @@ if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_admin regres
   header("Location:login.php");
 }
 
-$section = "emp_vender";
-$msg = "null";
+$section = "emp_vender"; $msg = "null";
 if (!isset($_SESSION["carrito"])) $_SESSION["carrito"] = [];
 $granTotal = 0;
 

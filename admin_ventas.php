@@ -6,10 +6,8 @@ session_start(); //inicializar la sesion
 if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
   header("Location:login.php");
 }
-$section = "admin_ventas";
-$msg = "null";
-$verVenta  = array();
-$ventaTotal = 0;
+$section = "admin_ventas"; $msg = "null";
+$verVenta  = array(); $ventaTotal = 0;
 
 $listarVentas = listarVentas();
 

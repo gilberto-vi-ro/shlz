@@ -7,10 +7,8 @@ if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_admin regres
   header("Location:login.php");
 }
 
-$section = "emp_ventas";
-$msg = "null";
-$verVenta  = array();
-$ventaTotal = 0;
+$section = "emp_ventas"; $msg = "null";
+$verVenta  = array(); $ventaTotal = 0;
 
 $listarVentas = listarVentas();
 

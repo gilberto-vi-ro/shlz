@@ -8,9 +8,9 @@
         }
 
         $codigo = $_POST["codigo"];
-        $sentencia = connDB()->prepare("SELECT * FROM producto WHERE cod_producto = ? LIMIT 1;");
-        $sentencia->execute([$codigo]);
-        $producto = $sentencia->fetch(PDO::FETCH_OBJ);
+        $clasePDO = connDB()->prepare("SELECT * FROM producto WHERE cod_producto = ? LIMIT 1;");
+        $clasePDO->execute([$codigo]);
+        $producto = $clasePDO->fetch(PDO::FETCH_OBJ);
         # Si no existe, salimos y lo indicamos
         if (!$producto) {
             //header("Location:?status=4");
@@ -98,12 +98,12 @@ function terminarVenta()
         $dni = $_SESSION["id_empleado"];
 
 
-        $sentencia = connDB()->prepare("INSERT INTO `ventas` (`total`, `fecha_venta`, `dni`) VALUES (?, ?, ?);");
-        $sentencia->execute([$total, $ahora, $dni]);
+        $clasePDO = connDB()->prepare("INSERT INTO `ventas` (`total`, `fecha_venta`, `dni`) VALUES (?, ?, ?);");
+        $clasePDO->execute([$total, $ahora, $dni]);
 
-        $sentencia = connDB()->prepare("SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1;");
-        $sentencia->execute();
-        $resultado = $sentencia->fetch(PDO::FETCH_OBJ);
+        $clasePDO = connDB()->prepare("SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1;");
+        $clasePDO->execute();
+        $resultado = $clasePDO->fetch(PDO::FETCH_OBJ);
         
         $idVenta = $resultado === false ? 1 : $resultado->id_venta;
 

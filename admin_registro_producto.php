@@ -8,8 +8,7 @@
         header("Location:login.php");
     }
 
-    $section = "admin_registro_producto";
-    $msg = "null";
+    $section = "admin_registro_producto"; $msg = "null";
 
     if (isset($_POST["registroProducto"]))
         $msg = registroProducto();

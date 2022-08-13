@@ -7,8 +7,7 @@
     if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
         header("Location:login.php");
     }
-    $section = "admin_inventario";
-    $msg = "null";
+    $section = "admin_inventario"; $msg = "null";
     
 
     if (isset($_GET["eliminarProducto"])){

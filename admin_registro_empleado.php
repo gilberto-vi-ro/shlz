@@ -7,8 +7,7 @@
   if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
     header("Location:login.php");
   }
-  $section = "admin_registro_empleado";
-  $msg = "null";
+  $section = "admin_registro_empleado"; $msg = "null";
 
   if (isset($_POST["registrarEmpleado"])){
        $msg = registrarEmpleado();

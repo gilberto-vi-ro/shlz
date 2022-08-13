@@ -3,8 +3,11 @@
     require_once "db/connDb.php";
     require_once "funcion_back_admin.php";
 
-    $section = "";
-    $msg = "null";
+    session_start(); //inicializar la sesion
+    if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
+        header("Location:login.php");
+    }
+    $section = ""; $msg = "null";
 
     if (isset($_POST["editarProductoDelForm"]))
         $msg  = editarProductoDelForm();

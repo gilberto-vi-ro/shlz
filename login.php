@@ -5,18 +5,14 @@ $msg = "";
 
 if (isset($_POST["usuario"])) {
     $clasePDO = connDb()->prepare("select id,usuario,contrasena from empleado where usuario=? and contrasena=? ");
-    $clasePDO->bindParam(1, $_POST["usuario"]);
-    $clasePDO->bindParam(2, $_POST["contrasena"]);
-    $clasePDO->execute(); //ejecutar la consulta
+    $clasePDO->execute([$_POST["usuario"],$_POST["contrasena"]]); //ejecutar la consulta
     $datosEmpleado = $clasePDO->fetch(PDO::FETCH_ASSOC); //obtener y guardar los datos de la bd en un array
 
     if (empty($datosEmpleado)) { //si esta vacio $datosEmpleado
 
         $clasePDO = connDb()->prepare("select id_admin,usuario,contrasena from administrador where usuario=? and contrasena=? ");
-        $clasePDO->bindParam(1, $_POST["usuario"]);
-        $clasePDO->bindParam(2, $_POST["contrasena"]);
-        $clasePDO->execute(); //ejecutar la consulta
-        $datosAdmin = $clasePDO->fetch(PDO::FETCH_ASSOC);
+        $clasePDO->execute([$_POST["usuario"],$_POST["contrasena"]]); //ejecutar la consulta
+        $datosAdmin = $clasePDO->fetch(PDO::FETCH_ASSOC);// obtine los datos de la bd como array
         if (empty($datosAdmin)) { //si esta vacio $datosAdmin
             $msg = "Usuario o contraseña incorrectos";
         } else {  //si no esta vacio es porque ingreso un administrador
