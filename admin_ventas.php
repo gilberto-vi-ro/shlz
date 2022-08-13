@@ -141,7 +141,7 @@ if (isset($_GET["verVenta"])) {
     <?php
     include_once("include/pie_de_pagina.php");
     ?>
-    <script src="js/bootstrap_js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap_js/bootstrap.min.js"></script> -->
 
   </footer>
 
