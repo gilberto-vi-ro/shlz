@@ -3,17 +3,19 @@ require_once "config.php";
 require_once "db/connDb.php";
 require_once "funcion_back_emp.php";
 session_start(); //inicializar la sesion
-if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_admin regresar al login.php
-  header("Location:login.php");
+if (!isset($_SESSION["id_empleado"])) { //si no existe la sesion id_empleado regresar al login.php
+  header("Location:login.php");  //redirecciona a login.php
 }
 
-$section = "emp_ventas"; $msg = "null";
-$verVenta  = array(); $ventaTotal = 0;
+$section = "emp_ventas"; //variable para identificar la seccion o pagina en que se esta
+$msg = "null"; // variable que contendra los mensajes que devuelven las funciones 
+$verVenta  = array(); //varible en array que guardara los datos de las ventas
+$ventaTotal = 0;//variable que guarda el total de las ventas
 
-$listarVentas = listarVentas();
+$listarVentas = listarVentas(); //guarda los datos devueltos de la funcion en la variable $listarVentas
 
-if (isset($_GET["verVenta"])) {
-  $verVenta = verVenta();
+if (isset($_GET["verVenta"])) { //si y solo si existe el metodo get con el indice verVenta 
+  $verVenta = verVenta(); //variable que almacena el los datos de la db de las ventas
 }
 
 
@@ -23,12 +25,12 @@ if (isset($_GET["verVenta"])) {
 <!DOCTYPE html>
 <html>
 
-<?php include_once "include/menu_emp.php"; ?>
+<?php include_once "include/menu_emp.php"; ?> <!-- incluye el navbar, los link de los estilos .css y los script .js -->
 <title>Ventas</title>
 
 <body>
 
-  <?php if (isset($_GET["verVenta"])) {  ?>
+  <?php if (isset($_GET["verVenta"])) {  ?> <!-- si existe el metodo get con el indice verVenta  -->
 
     <section style="padding: 22px;">
       <div class="container p-5 s">
@@ -38,7 +40,7 @@ if (isset($_GET["verVenta"])) {
           </div>
         </div>
 
-
+         <!-- inicio de la tabla de ventas -->
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -72,19 +74,22 @@ if (isset($_GET["verVenta"])) {
               <td scope="row" colspan="5">Total price</td>
               <td translate="no">$ <?= $ventaTotal ?></td>
             </tr>
-          </table>
+          </table> <!-- fin de la tabla de ventas -->
         </div>
         <br>
         <br>
     </section>
 
-  <?php } else {  ?>
+  <?php } else {  ?> <!-- sino existe el metodo get con el indice verVenta  -->
     <section style="padding: 22px;">
       <div class="container p-5 s">
+        <!-- inicio del formulario de buscaddor-codigo -->
         <form method="POST" action="?buscar" class="buscaddor-codigo">
           <label for="codigo">Buscar:</label>
           <input autocomplete="off" autofocus class="form-control" name="buscar" type="text" placeholder="Buscar">
         </form>
+        <!-- fin del formulario de buscaddor-codigo -->
+        <!-- inicio de la tabla de ver ventas -->
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -120,6 +125,7 @@ if (isset($_GET["verVenta"])) {
             </tbody>
 
           </table>
+          <!-- fin de la tabla de ver ventas -->
         </div>
         <br>
         <br>
@@ -129,7 +135,6 @@ if (isset($_GET["verVenta"])) {
     <?php
     include_once("include/pie_de_pagina.php");
     ?>
-    <script src="js/bootstrap_js/bootstrap.min.js"></script>
 
   </footer>
 

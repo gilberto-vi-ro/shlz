@@ -5,18 +5,18 @@
 
     session_start(); //inicializar la sesion
     if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-        header("Location:login.php");
+        header("Location:login.php"); //redirecciona a login.php
     }
-    $section = ""; $msg = "null";
+    $section = ""; //variable para identificar la seccion o pagina en que se esta
+    $msg = "null"; // variable que contendra los mensajes que devuelven las funciones
 
-    if (isset($_POST["editarProductoDelForm"]))
-        $msg  = editarProductoDelForm();
+    if (isset($_POST["editarProductoDelForm"])) //si y solo si existe el metodo post con el indice editarProductoDelForm 
+        $msg  = editarProductoDelForm(); // llamar a lafuncion y guardar lo que devuelve en $msg
 
-    if (isset($_GET["editarProducto"]))
-        $datoProducto = obtenerDatosParaEditarProducto();
-    else 
-        header("Location:admin_inventario.php");
-
+    if (isset($_GET["editarProducto"])) //si existe el metodo get  con el indice editarProducto 
+        $datoProducto = obtenerDatosParaEditarProducto(); // llamar a lafuncion y guardar lo que devuelve en $datoProducto 
+    else //si no existe el metodo get  con el indice editarProducto 
+        header("Location:admin_inventario.php"); // redireccionar a admin_inventario.php
 
         
 
@@ -25,7 +25,7 @@
 <!DOCTYPE html>
 <html>
 <title class="titulos">Actualizar producto</title>
-<?php include_once "include/menu.php"; ?>
+<?php include_once "include/menu.php"; ?>  <!-- incluye el navbar, los link de los estilos .css y los script .js -->
 
 <body>
 
@@ -33,7 +33,7 @@
         <center>
             <h2>Actualizar Producto</h2>
         </center>
-        <!-- inicio de registro -->
+        <!-- inicio del formulario de registro -->
         <form class="cont-form" action="?editarProducto&codigo=<?=$_GET['codigo']?>" method="POST">
             <input type="hidden" name="editarProductoDelForm">
             <input type="hidden" name="codigo_prod" value="<?=$datoProducto["cod_producto"]?>">
@@ -68,7 +68,7 @@
 
             <center><button type="submit" class="btn btn-primary">actualizar</button></center>
         </form>
-        <!-- fin de registro -->
+        <!-- del formulario de registro -->
 
     </section>
 

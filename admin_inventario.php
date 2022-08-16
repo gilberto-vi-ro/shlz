@@ -5,22 +5,23 @@
 
     session_start(); //inicializar la sesion
     if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-        header("Location:login.php");
+        header("Location:login.php"); //redirecciona a login.php
     }
-    $section = "admin_inventario"; $msg = "null";
+    $section = "admin_inventario"; //variable para identificar la seccion o pagina en que se esta
+    $msg = "null"; // variable que contendra los mensajes que devuelven las funciones
     
 
-    if (isset($_GET["eliminarProducto"])){
-        $msg = eliminarProducto();
+    if (isset($_GET["eliminarProducto"])){ //si y solo si existe el metodo get con el indice eliminarProducto 
+        $msg = eliminarProducto(); // ejecutar la funcion y guardar lo que devuelve en $msg
     }
 
-    $datosProductos = listarProductos();
+    $datosProductos = listarProductos(); // guarda los datos devueltos de la funcion en la variable $datosProductos
 
-    if (isset($_POST["buscarProducto"])){
-        if($_POST["buscar"]=="")
-            $datosProductos = listarProductos();
-        else
-            $datosProductos = buscarProducto();
+    if (isset($_POST["buscarProducto"])){ //si y solo si existe el metodo post con el indice buscarProducto 
+        if($_POST["buscar"]=="") //ademas si existe el metodo post con el indice buscar 
+            $datosProductos = listarProductos();  // guarda los datos devueltos de la funcion en la variable $datosProductos
+        else // sino
+            $datosProductos = buscarProducto(); // guarda los datos devueltos de la funcion en la variable $datosProductos
     }
         
 
@@ -32,11 +33,11 @@
 <!DOCTYPE html>
 <html>
 
-<?php include_once "include/menu.php"; ?>
+<?php include_once "include/menu.php"; ?>  <!-- incluye el navbar, los link de los estilos .css y los script .js -->
 
 <body>
 
-      <!-- buscador-->
+      <!-- formulario buscar-->
     <center>
         <form action="?" method="POST">
             <div class="input-group mb-3 size-input-search">
@@ -46,8 +47,8 @@
             </div>
         </form>
     </center>
-
-    <!-- inicio de tabla -->
+    <!-- fin del formulario buscar -->
+    <!-- inicio de la tabla inventario-->
     <div class="top-table table-responsive">
         <table class="table table-striped table-bordered ">
             <thead>
@@ -79,29 +80,29 @@
             </tbody>
         </table>
     </div>
-    <!--  end table -->
+    <!--  fin de la tabla inventario -->
 
 
     <footer>
         <?php
         include_once("include/pie_de_pagina.php");
         ?>
-        <script>
-        var deletes = document.querySelectorAll(".js-delete");
-        deletes.forEach(function(value, key) {
-            value.addEventListener("click", function() {
-            dialogDelete(value)
+        <script> //====================  pequenio escript de javascript =====================================
+        var deletes = document.querySelectorAll(".js-delete"); // busca en html a todos los que contengan la clase css js-delete
+        deletes.forEach(function(value, key) { // le da vuelta a todos los elementos encontrados
+            value.addEventListener("click", function() {// se le asigana el evento click a los elementos
+            dialogDelete(value)//al dar click se invoca a esta funcion
             }, false);
         });
 
-        function dialogDelete(value) {
-            swal('ADVERTENCIA', "Estas seguro de eliminar el Producto?.", "warning", {
-            buttons: ["Cancelar", "Eliminar"]
-            }).then(function(val) {
-            var redir = value.getAttribute("href");
-            if (val)
-                window.location.href = redir.substr(1);//redireccionar
-            }).then(function(val) {});
+        function dialogDelete(value) { // funcion para preguntar al eliminar un elemento
+            swal('ADVERTENCIA', "Estas seguro de eliminar el Producto?.", "warning", {// funcion de swalAlert para cuadros de dialogo
+                buttons: ["Cancelar", "Eliminar"]
+            }).then(function(val) { // se ejecuta al cerrar el cuadro del dialogo
+                var redir = value.getAttribute("href");// se obtine el atributo href del boton del elemento a eliminar
+                if (val)
+                    window.location.href = redir.substr(1);//redireccionar
+            });
         }
     </script>
     </footer>

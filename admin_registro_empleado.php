@@ -5,20 +5,22 @@
 
   session_start(); //inicializar la sesion
   if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-    header("Location:login.php");
+    header("Location:login.php"); //redirecciona a login.php
   }
-  $section = "admin_registro_empleado"; $msg = "null";
+  $section = "admin_registro_empleado";//variable para identificar la seccion o pagina en que se esta
+  $msg = "null";// variable que contendra los mensajes que devuelven las funciones 
+ 
 
-  if (isset($_POST["registrarEmpleado"])){
-       $msg = registrarEmpleado();
+  if (isset($_POST["registrarEmpleado"])){ //si y solo si existe el metodo post con el indice registrarEmpleado 
+       $msg = registrarEmpleado(); // ejecutar a la funcion y guardar lo que devuelve en $msg
   }
 
-  if (isset($_GET["eliminarEmpleado"])){
-    $msg = eliminarEmpleado();
+  if (isset($_GET["eliminarEmpleado"])){ //si y solo si existe el metodo get con el indice eliminarEmpleado 
+    $msg = eliminarEmpleado();  // ejecutar a la funcion y guardar lo que devuelve en $msg
   }
 
     
-  $datosEmpleados = listarEmpleados();
+  $datosEmpleados = listarEmpleados(); // guarda los datos devueltos de la funcion en la variable  $datosEmpleados
   
 
 ?>
@@ -27,7 +29,7 @@
 <!DOCTYPE html>
 <html>
 
-<?php include_once "include/menu.php"; ?>
+<?php include_once "include/menu.php"; ?> <!-- incluye el navbar, los link de los estilos .css y los script .js -->
 <title>Registro empleado</title>
 
 <body>
@@ -40,7 +42,7 @@
     <center>
       <h2>Registro de Empleado</h2>
     </center>
-    <!-- inicio de registro -->
+    <!-- inicio del formulario registro -->
     <form action="?" class="cont-form" method="POST">
       <input type="hidden" name="registrarEmpleado">
       <div class="mb-3 row form-goup">
@@ -91,10 +93,10 @@
       </div>
       <center><button type="submit" class="btn btn-primary">Registrar</button></center>
     </form>
-    <!-- fin de registro -->
+    <!-- fin del formulario registro -->
   </div>
 
-  <!-- inicio de tabla -->
+  <!-- inicio de tabla de los empleados -->
   <div class="top-table table-responsive">
     <table class="table table-striped table-bordered ">
       <thead>
@@ -131,7 +133,7 @@
       </tbody>
     </table>
   </div>
-  <!--  end table -->
+  <!--  fin de tabla de los empleados -->
 
 
   <footer>
@@ -139,22 +141,22 @@
     include_once("include/pie_de_pagina.php");
 
     ?>
-    <script>
-      var deletes = document.querySelectorAll(".js-delete");
-      deletes.forEach(function(value, key) {
-        value.addEventListener("click", function() {
-          dialogDelete(value)
+    <script>//====================  pequenio escript de javascript =====================================
+      var deletes = document.querySelectorAll(".js-delete"); // busca en html a todos los que contengan la clase css js-delete
+      deletes.forEach(function(value, key) { // le da vuelta a todos los elementos encontrados
+        value.addEventListener("click", function() { // se le asigana el evento click a los elementos
+          dialogDelete(value)//al dar click se invoca a esta funcion
         }, false);
       });
 
-      function dialogDelete(value) {
-        swal('ADVERTENCIA', "Estas seguro de eliminar el Empleado?.", "warning", {
+      function dialogDelete(value) {  // funcion para preguntar al eliminar un elemento
+        swal('ADVERTENCIA', "Estas seguro de eliminar el Empleado?.", "warning", { // funcion de swalAlert para cuadros de dialogo
           buttons: ["Cancelar", "Eliminar"]
-        }).then(function(val) {
-          var redir = value.getAttribute("href");
+        }).then(function(val) {// se ejecuta al cerrar el cuadro del dialogo
+          var redir = value.getAttribute("href"); // se obtine el atributo href del boton del elemento a eliminar
           if (val)
             window.location.href = redir.substr(1);
-        }).then(function(val) {});
+        });
       }
     </script>
   </footer>

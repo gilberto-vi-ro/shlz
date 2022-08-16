@@ -5,17 +5,18 @@
 
     session_start(); //inicializar la sesion
     if (!isset($_SESSION["id_admin"])) { //si no existe la sesion id_admin regresar al login.php
-        header("Location:login.php");
+        header("Location:login.php");//redirecciona a login.php
     }
-    $section = ""; $msg = "null";
+    $section = ""; //variable para identificar la seccion o pagina en que se esta
+    $msg = "null"; // variable que contendra los mensajes que devuelven las funciones
 
-    if (isset($_POST["editarEmpleadoDelForm"]))
-        $msg  = editarEmpleadoDelForm();
+    if (isset($_POST["editarEmpleadoDelForm"])) //si y solo si existe el metodo post con el indice editarEmpleadoDelForm 
+        $msg  = editarEmpleadoDelForm(); // llamar a lafuncion y guardar lo que devuelve en $msg
 
-    if (isset($_GET["editarEmpleado"]))
-        $datoEmpleado = obtenerDatosParaEditarEmpleado();
-    else 
-        header("Location:admin_registro_empleado.php");
+    if (isset($_GET["editarEmpleado"]))//si existe el metodo get  con el indice editarEmpleado 
+        $datoEmpleado = obtenerDatosParaEditarEmpleado();// llamar a lafuncion y guardar lo que devuelve en $datoEmpleado 
+    else //si no existe el metodo get  con el indice editarEmpleado 
+        header("Location:admin_registro_empleado.php"); // redireccionar a admin_registro_empleado.php
 
 
         
@@ -25,7 +26,7 @@
 <!DOCTYPE html>
 <html>
 <title class="titulos">Actualizar producto</title>
-<?php include_once "include/menu.php"; ?>
+<?php include_once "include/menu.php"; ?>  <!-- incluye el navbar, los link de los estilos .css y los script .js -->
 
 <body>
 
@@ -33,7 +34,7 @@
         <center>
         <h2>Editar de Empleado</h2>
         </center>
-        <!-- inicio de registro -->
+        <!-- inicio del formulario del registro -->
         <form action="?editarEmpleado&id=<?=$_GET["id"]?>" class="cont-form" method="POST">
         <input type="hidden" name="editarEmpleadoDelForm">
         <input type="hidden" name="id_empleado" value="<?=$datoEmpleado["id"]?>">
@@ -85,7 +86,7 @@
         </div>
         <center><button type="submit" class="btn btn-primary">Guardar cambios</button></center>
         </form>
-        <!-- fin de registro -->
+        <!-- fin del formulario del registro -->
     </section>
 
 

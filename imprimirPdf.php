@@ -4,9 +4,8 @@
     require_once "config.php";   
     require_once "db/connDb.php";
 
-    function verVenta()
+    function verVenta()//funcion para listar los productos vendidos
     {
-        //listar inventario
         $miConsulta = connDB()->prepare("SELECT * FROM productos_vendidos
                 INNER JOIN producto ON productos_vendidos.cod_producto = producto.cod_producto
                 where id_venta = ?");
@@ -67,7 +66,7 @@ $pdf->SetY(44);
 //traer la consulta por GET
 
 
-foreach (verVenta() as $indice => $venta) {
+foreach (verVenta() as $indice => $venta) { //dar vuelta a todos elementos que contiene verVenta()
 
     
     $pdf->Cell(20, 10, utf8_decode($venta->id_venta), 1, 0, 'C');

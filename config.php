@@ -1,5 +1,8 @@
 <?php
 
+	/*=======================================================
+	constantes que se utilizaran en la app web
+	=========================================================*/
 	#Configuracion de acceso a la base de datos
 	define('SGDB','mysql');
 	define('DB_HOST','localhost');

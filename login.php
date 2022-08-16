@@ -1,9 +1,9 @@
 <?php
 require_once "config.php";
 require "db/connDb.php";
-$msg = "";
+$msg = ""; // variable que contendra los mensajes que devuelven las funciones 
 
-if (isset($_POST["usuario"])) {
+if (isset($_POST["usuario"])) {  //si y solo si existe el metodo post con el indice usuario 
     $clasePDO = connDb()->prepare("select id,usuario,contrasena from empleado where usuario=? and contrasena=? ");
     $clasePDO->execute([$_POST["usuario"],$_POST["contrasena"]]); //ejecutar la consulta
     $datosEmpleado = $clasePDO->fetch(PDO::FETCH_ASSOC); //obtener y guardar los datos de la bd en un array
@@ -17,15 +17,15 @@ if (isset($_POST["usuario"])) {
             $msg = "Usuario o contraseña incorrectos";
         } else {  //si no esta vacio es porque ingreso un administrador
             //echo "bienvenido como admin";
-            session_start();
+            session_start();// inicia la sesion
             $_SESSION["id_admin"] = $datosAdmin["id_admin"]; //guardamos el administrador.id_admin en una sesion id_admin
-            header("Location:admin_inventario.php");
+            header("Location:admin_inventario.php");// redireccionar a admin_inventario.php
         }
     } else {  //si no esta vacio es porque ingreso un empleado
         // "bienvenido como empleado";
-        session_start();
+        session_start();// inicia la sesion
         $_SESSION["id_empleado"] = $datosEmpleado["id"]; //guardamos el empleado.id en una sesion id_empleado
-        header("Location:emp_vender.php");
+        header("Location:emp_vender.php"); // redireccionar a emp_vender.php
     }
 }
 ?>
@@ -45,7 +45,7 @@ if (isset($_POST["usuario"])) {
     </title>
 
 <body>
-    <div><?php  if ($msg!="")
+    <div><?php  if ($msg!="")// si el mensaje es diferente de vacio ejecutar lo siguiente
             echo '<script>swal("WARNING", "' . $msg . '", "warning")</script>'; ?></div><!--  cuadro de dialogo con js -->
     <div class="wrapper fadeInDown">
         <div id="formContent">

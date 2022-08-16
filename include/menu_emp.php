@@ -45,18 +45,19 @@
       </div>
     </nav>
   </header>
-  <script>
-    var section = "<?= $section; ?>";
-    var msg = "<?= $msg; ?>";
+  <script>//====================  pequenio escript de javascript =====================================
+    var section = "<?= $section; ?>"; //variable que obtine el valor de la variable de php $section
+    var msg = "<?= $msg; ?>"; //variable que obtine el valor de la variable de php $msg
 
-    if (section == "emp_vender")
-      document.getElementById("emp_vender").classList.add("active");
-    else if (section == "emp_ventas")
-      document.getElementById("emp_ventas").classList.add("active");
+    if (section == "emp_vender") //si la seccion o pagina es = a emp_vender
+      document.getElementById("emp_vender").classList.add("active");// busca el id en html y le agrega una clase css
+    else if (section == "emp_ventas") //sino, entonces la seccion o pagina es = a emp_ventas
+      document.getElementById("emp_ventas").classList.add("active");// busca el id en html y le agrega una clase css
 
-    if(msg!="null"){
-      swal("INFO", msg, "info").then(function(val){
-          history.pushState(null,"","?");
+    if(msg!="null"){ // si y solo si la variable msg es diferente de null
+      swal("INFO", msg, "info")// mensaje de cuadro del dialogo 
+      .then(function(val){// se ejecuta al cerrar el cuadro del dialogo
+          history.pushState(null,"","?"); //quita el get de la url
       });
     }
       

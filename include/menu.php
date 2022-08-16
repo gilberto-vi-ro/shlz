@@ -53,23 +53,24 @@
       </div>
     </nav>
   </header>
-  <script>
-    var section = "<?= $section; ?>";
-    var msg = "<?= $msg; ?>";
+  <script>//====================  pequenio escript de javascript =====================================
+    var section = "<?= $section; ?>"; //variable que obtine el valor de la variable de php $section
+    var msg = "<?= $msg; ?>";  //variable que obtine el valor de la variable de php $msg
     
 
-    if (section == "admin_inventario")
-      document.getElementById("inventario").classList.add("active");
-    else if (section == "admin_registro_empleado")
-      document.getElementById("navbarDropdown").classList.add("active");
-    else if (section == "admin_registro_producto")
-      document.getElementById("navbarDropdown").classList.add("active");
-    else if (section == "admin_ventas")
-      document.getElementById("ventas").classList.add("active");
+    if (section == "admin_inventario") //si la seccion o pagina es = a admin_inventario
+      document.getElementById("inventario").classList.add("active");// busca el id en html y le agrega una clase css
+    else if (section == "admin_registro_empleado") //sino, entonces la seccion o pagina es = a admin_registro_empleado
+      document.getElementById("navbarDropdown").classList.add("active");// busca el id en html y le agrega una clase css
+    else if (section == "admin_registro_producto") //sino, entonces la seccion o pagina es = a admin_registro_producto
+      document.getElementById("navbarDropdown").classList.add("active");// busca el id en html y le agrega una clase css
+    else if (section == "admin_ventas") //sino, entonces la seccion o pagina es = a admin_ventas
+      document.getElementById("ventas").classList.add("active");// busca el id en html y le agrega una clase css
 
-    if(msg!="null")
-      swal("INFO", msg, "info").then(function(val){
-          history.pushState(null,"","?");
+    if(msg!="null")// si y solo si la variable msg es diferente de null
+      swal("INFO", msg, "info")// mensaje de cuadro del dialogo
+      .then(function(val){// se ejecuta al cerrar el cuadro del dialogo
+          history.pushState(null,"","?");//quita el get de la url
       });
   </script>
 
